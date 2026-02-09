@@ -14,12 +14,12 @@ pub mod farmer_core {
     use super::*;
 
     /// Initializes the program configuration account
-    pub fn initialize(
+    pub fn init_config(
         ctx: Context<InitConfig>,
         logistics_wallet: Pubkey,
         paused: bool,
         allowed_mints: Vec<Pubkey>,
     ) -> Result<()> {
-        init_config(ctx, logistics_wallet, paused, allowed_mints)
+        instructions::init_config::init_config(ctx, logistics_wallet, paused, allowed_mints)
     }
 }
