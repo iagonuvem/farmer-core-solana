@@ -1,9 +1,11 @@
-# Farmer Core Solana Bridge (Marketplace + Logistics Escrow)
-A Solana program (Rust + Anchor) that acts as a **Bridge** for Farmer Core: enabling transparent on-chain listings and purchases, while preserving **customer privacy** and letting a **warehouse/logistics operator** guarantee fulfillment using **escrow**.
+# Katūbayá Solana Bridge (Marketplace + Logistics Escrow)
+
+A Solana program (Rust + Anchor) that acts as a **Bridge** for katubaya: enabling transparent on-chain listings and purchases, while preserving **customer privacy** and letting a **warehouse/logistics operator** guarantee fulfillment using **escrow**.
 
 This program is intentionally modular:
-- **Farmer Core** remains the farmer-owned, offline-first system of record.
+- **Katūbaya** remains the farmer-owned, offline-first system of record.
 - The **Bridge** provides market rails: listings, routing via warehouses, order lifecycle, escrow, and verifiable sales events.
+- It should to be extinsible to any network, but starting with Solana.
 
 ---
 
@@ -24,13 +26,13 @@ This program is intentionally modular:
    - Warehouse/logistics receives fees upon completion.
 
 ### Secondary
-- Provide events that Farmer Core can ingest to update inventory (append-only).
+- Provide events that katubaya can ingest to update inventory (append-only).
 - Support a future DApp where farmer pubkeys become public profiles and offers become a discoverable market.
 
 ---
 
 ## 2. Non-Goals (MVP)
-- No on-chain storage of Farmer Core JSON exports (only pointers/hashes optionally).
+- No on-chain storage of katubaya JSON exports (only pointers/hashes optionally).
 - No on-chain private messaging or address exchange.
 - No automated inventory mutation on-chain (inventory updates are derived off-chain from events).
 - No rankings, social feeds, or reputation.
@@ -47,8 +49,8 @@ Before a customer can buy:
   - contact preferences
 - Warehouse then confirms the customer **on-chain**.
 
-### 3.2 Optional encrypted Farmer Core pack pointer
-Farmers may publish a pointer to encrypted Farmer Core export data:
+### 3.2 Optional encrypted katubaya pack pointer
+Farmers may publish a pointer to encrypted katubaya export data:
 - Stored off-chain (Arweave/IPFS/HTTPS blob)
 - On-chain stores: URI + ciphertext hash (integrity anchor)
 - Decryption keys remain farmer-controlled (not part of MVP)
@@ -343,7 +345,7 @@ Recommended expiry defaults:
 
 ## 9. Event Interface (Integration Backbone)
 
-Emit events for indexing and Farmer Core synchronization:
+Emit events for indexing and katubaya synchronization:
 
 - `CustomerConfirmationRequested { warehouse, customer }`
 - `CustomerConfirmed { warehouse, customer }`
@@ -364,16 +366,16 @@ Emit events for indexing and Farmer Core synchronization:
 - `OrderCanceled { order }`
 - `OrderExpired { order }`
 
-### Farmer Core inventory reconciliation
-Farmer Core (or a Bridge indexer) ingests `OrderCompleted` and records an internal:
+### katubaya inventory reconciliation
+katubaya (or a Bridge indexer) ingests `OrderCompleted` and records an internal:
 - `InventoryAdjustment(reason="sale", deltaQuantity = -qty, ...)`
 
-Then Farmer Core generates updated Availability Packs and publishes new offers if needed.
+Then katubaya generates updated Availability Packs and publishes new offers if needed.
 
 ---
 
 ## 10. Unit Encoding (On-chain integer quantities)
-Farmer Core uses `DecimalString`. On-chain uses integers for safety.
+katubaya uses `DecimalString`. On-chain uses integers for safety.
 
 Recommended encoding:
 - `kg` → store grams (g)
@@ -495,11 +497,11 @@ Keep them stable:
 ---
 
 ## 16. Optional: PackPointer Integration
-This program does not depend on Farmer Core packs, but may optionally allow:
+This program does not depend on katubaya packs, but may optionally allow:
 - `publish_pack_pointer(...)`
 - linking offers to packs for provenance
 
-This keeps Farmer Core data farmer-owned and portable, while enabling third-party Bridges.
+This keeps katubaya data farmer-owned and portable, while enabling third-party Bridges.
 
 ---
 
